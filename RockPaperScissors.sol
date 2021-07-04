@@ -4,6 +4,10 @@ pragma solidity >=0.7.0 <0.9.0;
 contract RockPaperScissors {
     uint gamesPlayed;
     
+    event StartGame(address indexed initiator, address indexed opponent, uint gameId);
+    event MakeMove(uint gameId, address indexed initiator, string indexed move);
+    
+    
     struct Game {
         address first_player;
         address second_player;
@@ -27,6 +31,7 @@ contract RockPaperScissors {
         Game storage game = games[gamesPlayed];
         game.first_player = msg.sender;
         game.second_player = opponent;
+        emit StartGame(msg.sender, opponent, gamesPlayed);
     }
     
     // Choose your move in a particular game
@@ -48,6 +53,7 @@ contract RockPaperScissors {
             require(compareStrings(game.second_player_choice,empty));
             game.second_player_choice=move;
         }
+        emit MakeMove(gameId, msg.sender, move);
     }
     
     // Get winner for a game
@@ -72,7 +78,7 @@ contract RockPaperScissors {
     }
     
     // compare Strings
-    function compareStrings(string memory a, string memory b) public pure returns (bool) {
-    return (keccak256(abi.encodePacked((a))) == keccak256(abi.encodePacked((b))));
+    function compareStrings(string memory a, string memory b) private pure returns (bool) {
+        return (keccak256(abi.encodePacked((a))) == keccak256(abi.encodePacked((b))));
     }
 }
