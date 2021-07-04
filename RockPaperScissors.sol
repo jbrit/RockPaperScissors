@@ -26,7 +26,7 @@ contract RockPaperScissors {
     // Start a game with desired opponent
     function startGameWith(address opponent) public{
         // You can't play with yourself
-        require(msg.sender!=opponent);
+        require(msg.sender!=opponent, "You can't play with yourself");
         gamesPlayed++;
         Game storage game = games[gamesPlayed];
         game.first_player = msg.sender;
@@ -39,18 +39,18 @@ contract RockPaperScissors {
         Game storage game = games[gameId];
         string memory empty = "";
         // Game must exist
-        require(gameId<=gamesPlayed);
+        require(gameId<=gamesPlayed. "Game must exist");
         // Must be permitted to play the game
-        require(msg.sender==game.first_player || msg.sender==game.second_player);
+        require(msg.sender==game.first_player || msg.sender==game.second_player, "Must be permitted to play the game");
         // Makes only a valid move
-        require(compareStrings(move,"ROCK") || compareStrings(move,"PAPER") || compareStrings(move,"SCISSORS"));
+        require(compareStrings(move,"ROCK") || compareStrings(move,"PAPER") || compareStrings(move,"SCISSORS"), "Makes only a valid move");
         if(msg.sender==game.first_player){
             // Must be making a fresh move
-            require(compareStrings(game.first_player_choice, empty));
+            require(compareStrings(game.first_player_choice, empty),"Must be making a new move");
             game.first_player_choice=move;
         } else {
             // Must be making a fresh move
-            require(compareStrings(game.second_player_choice,empty));
+            require(compareStrings(game.second_player_choice,empty), "Must be making a new move");
             game.second_player_choice=move;
         }
         emit MakeMove(gameId, msg.sender, move);
@@ -61,7 +61,7 @@ contract RockPaperScissors {
         Game storage game = games[gameId];
         string memory empty = "";
         // Check if both players are done
-        require(!compareStrings(game.first_player_choice, empty) && !compareStrings(game.second_player_choice,empty));
+        require(!compareStrings(game.first_player_choice, empty) && !compareStrings(game.second_player_choice,empty), "both players must be done");
         // Check if it's not a tie
         if(compareStrings(game.first_player_choice,game.second_player_choice)){
             return address(0);
