@@ -39,7 +39,7 @@ contract RockPaperScissors {
         Game storage game = games[gameId];
         string memory empty = "";
         // Game must exist
-        require(gameId<=gamesPlayed. "Game must exist");
+        require(gameId<=gamesPlayed, "Game must exist");
         // Must be permitted to play the game
         require(msg.sender==game.first_player || msg.sender==game.second_player, "Must be permitted to play the game");
         // Makes only a valid move
